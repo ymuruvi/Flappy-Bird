@@ -10,6 +10,9 @@
     -This game was made using a set of mo dules from PyGame.
     -You can install pygame from the following website:
         http://www.lfd.uci.edu/~gohlke/pythonlibs/#pygame
+=======================================TODO=======================================
+    -Add Acceleration to the bird
+    -Add rotation to the bird
 =================================================================================="""
 
 #Imports modules
@@ -83,25 +86,30 @@ botPipe2Y = 0
 topPipe3Y = 0
 botPipe3Y = 0
 
-#Assigns the score to zero since game hasn't been played yet.
-score = 0
-
 #Assigns text information
 font = pygame.font.SysFont( " Comic Sans MS", 30)
-font2 = pygame.font.SysFont(" Comic Sans MS, Arial", 120)
+font2 = pygame.font.SysFont(" Comic Sans MS, Arial", 60)
 highScoreText = font.render("High Score:", True, black)
 scoreBoard = font.render("Score:", True, black)
 clickToPlay = font2.render("Click to Play!", True, red)
 cTPC= 30,screenLen/2-40
 scoreBoardPos = (5,5)
 scorePos = (100,5)
-highScore = 0
+score = 0
+highScore = score
 
 #Assigns the bird's information
 birdx = 100
 birdy = screenLen / 2
 birdWid = 51
 birdLen = 36
+
+#Variables and information needed to add acceleration for the bird
+"""The equation is y=(x-birdX)^2
+For this to work I increment the accX every time the loop occurs"""
+accX=0
+y=birdy
+
 
 #makes it so that the bird will not move originally
 movement = 'none'
@@ -129,7 +137,7 @@ def colidedX(birdX, colCo, cX):
         c1x = True
     else:
         c1x = False
-def colidedXY(cX, cY):
+def colidedXY(cX, cY, score, highScore):
     if cX and cY:
         movement = 'none'
         birdy = int(screenLen/2)
@@ -186,6 +194,9 @@ while True:
     screen.fill(bgColor)
     screen.blit(bgImage,(0,0))
 
+#Increments variables needed for acceleration to occur properly
+    accX+=1
+
 #------------------------------Takes in input types-------------------------------
     for event in pygame.event.get():
 
@@ -196,6 +207,7 @@ while True:
                 clickAgain-=1
             else:
                 speed = orgSpeed
+                changeInTime=0
                 goingUp+=10
                 if goingUp > 30:
                     goingUp = 30
@@ -237,7 +249,7 @@ while True:
 
 #Makes it so that the bird accelerates down
     if movement == 'down':
-        changeInTime +=0.1
+        changeInTime +=0.4
         birdy+=changeInTime
 
 #If the bird falls to the ground  the game restarts
@@ -267,15 +279,15 @@ while True:
 ##Pipe 1 colission detection
     colidedY(birdy, topPipe1Y, botPipe1Y, c1y)
     colidedX(birdx, col1X, c1x)
-    colidedXY(c1x,c1y)
+    colidedXY(c1x,c1y,score,highScore)
 
     colidedY(birdy, topPipe2Y, botPipe2Y, c2y)
     colidedX(birdx, col2X, c2x)
-    colidedXY(c2x,c2y)
+    colidedXY(c2x,c2y,score,highScore)
 
     colidedY(birdy, topPipe3Y, botPipe3Y, c3y)
     colidedX(birdx, col3X, c3x)
-    colidedXY(c3x,c3y)
+    colidedXY(c3x,c3y,score,highScore)
     if birdy >= topPipe1Y and birdy+36<= botPipe1Y:
         c1y = False
     else:
