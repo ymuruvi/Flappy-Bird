@@ -7,7 +7,7 @@
  Licence:   MIT Lisence
 =================================Notes/ Checklist=================================
     -This game was written in versio 3.3.1 of the python programmign language.
-    -This game was made using a set of mo dules from PyGame.
+    -This game was made using a set of modules from PyGame.
     -You can install pygame from the following website:
         http://www.lfd.uci.edu/~gohlke/pythonlibs/#pygame
 =======================================TODO=======================================
